@@ -1,50 +1,10 @@
 import React, { useState } from "@rbxts/react";
 import { Location } from "../Types";
-
-interface TextButtonProps extends Partial<React.InstanceProps<TextButton>> {}
-function TextButton(props: TextButtonProps) {
-	return (
-		<textbutton
-			FontFace={Font.fromEnum(Enum.Font.GothamMedium)}
-			BorderSizePixel={0}
-			TextColor3={new Color3(1, 1, 1)}
-			TextSize={18}
-			{...props}
-		>
-			{props.children}
-			<uicorner key={"Corners"} CornerRadius={new UDim(0, 7)} />
-		</textbutton>
-	);
-}
-
-interface TextLabelProps extends Partial<React.InstanceProps<TextLabel>> {}
-function TextLabel(props: TextLabelProps) {
-	return (
-		<textlabel
-			FontFace={Font.fromEnum(Enum.Font.GothamMedium)}
-			BackgroundTransparency={1}
-			BorderSizePixel={0}
-			TextColor3={new Color3(1, 1, 1)}
-			TextSize={18}
-			{...props}
-		>
-			{props.children}
-			<uicorner key={"Corners"} CornerRadius={new UDim(0, 7)} />
-		</textlabel>
-	);
-}
+import { TextButton, TextLabel } from "./Components";
 
 function Location(props: { name: string; created: string; pos: string }) {
 	return (
 		<frame Size={new UDim2(1, 0, 0, 75)} BackgroundTransparency={1}>
-			<uipadding
-				key={"Padding"}
-				PaddingTop={new UDim(0, 10)}
-				PaddingBottom={new UDim(0, 10)}
-				PaddingLeft={new UDim(0, 10)}
-				PaddingRight={new UDim(0, 10)}
-			/>
-
 			<TextButton
 				key={"TpButton"}
 				Text={"GO"}
@@ -62,6 +22,16 @@ function Location(props: { name: string; created: string; pos: string }) {
 					ApplyStrokeMode={Enum.ApplyStrokeMode.Border}
 				/>
 			</TextButton>
+
+			<imagebutton
+				key={"DeleteButton"}
+				Size={UDim2.fromOffset(25, 25)}
+				Position={new UDim2(1, -75, 1, 0)}
+				Image={"rbxassetid://15928976491"}
+				ScaleType={Enum.ScaleType.Fit}
+				AnchorPoint={new Vector2(1, 1)}
+				BackgroundTransparency={1}
+			/>
 
 			<TextLabel
 				key={"Name"}
@@ -131,7 +101,7 @@ export default () => {
 
 	return (
 		<frame Size={UDim2.fromScale(1, 1)} BackgroundTransparency={1}>
-			<frame key={"Filters"} BackgroundTransparency={1} Size={new UDim2(1, 0, 0, 100)}>
+			<frame key={"Filters"} BackgroundTransparency={1} Size={new UDim2(1, 0, 0, 50)}>
 				<uilistlayout
 					key={"Layout"}
 					SortOrder={Enum.SortOrder.LayoutOrder}
@@ -185,14 +155,43 @@ export default () => {
 				</TextButton>
 			</frame>
 
-			<frame
+			<scrollingframe
 				key={"Locations"}
 				Size={new UDim2(1, 0, 1, -100)}
-				Position={UDim2.fromOffset(0, 100)}
+				Position={UDim2.fromOffset(0, 50)}
 				BackgroundTransparency={1}
+				BorderSizePixel={0}
+				ScrollBarThickness={5}
+				ScrollBarImageColor3={new Color3(1, 1, 1)}
+				AutomaticCanvasSize={Enum.AutomaticSize.Y}
+				CanvasSize={new UDim2(0, 0, 1, -100)}
 			>
+				<uipadding
+					key={"Padding"}
+					PaddingTop={new UDim(0, 10)}
+					PaddingBottom={new UDim(0, 10)}
+					PaddingLeft={new UDim(0, 10)}
+					PaddingRight={new UDim(0, 10)}
+				/>
+
+				<uilistlayout
+					key={"Layout"}
+					SortOrder={Enum.SortOrder.LayoutOrder}
+					FillDirection={Enum.FillDirection.Vertical}
+				/>
+
 				<Locations locations={[{ CFrame: new CFrame(0, 0, 0) }]} />
-			</frame>
+			</scrollingframe>
+
+			<TextButton
+				key={"NewButton"}
+				Text={"+ Save Location"}
+				BackgroundColor3={Color3.fromRGB(225, 56, 53)}
+				BorderSizePixel={0}
+				Size={new UDim2(1, -20, 0, 30)}
+				Position={new UDim2(0.5, 0, 1, -10)}
+				AnchorPoint={new Vector2(0.5, 1)}
+			/>
 		</frame>
 	);
 };

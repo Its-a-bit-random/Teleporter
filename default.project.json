@@ -12,7 +12,10 @@
 				"$className": "Folder",
 				"@rbxts": {
 					"$path": "node_modules/@rbxts"
-				}
+				},
+        "@rbxutil": {
+          "$path": "node_modules/@rbxutil"
+        }
 			}
 		}
 	}

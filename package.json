@@ -36,6 +36,7 @@
     "@rbxts/comet": "^2.0.0",
     "@rbxts/react": "^17.2.3",
     "@rbxts/react-roblox": "^17.2.3",
-    "@rbxts/services": "^1.5.5"
+    "@rbxts/services": "^1.5.5",
+    "@rbxutil/signal": "^2.0.3"
   }
 }
