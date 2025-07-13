@@ -1,5 +1,7 @@
 export interface Location {
-	CFrame: CFrame;
+	Position: CFrame;
+	CreatedBy: string;
+	Name: string;
 }
 
 export interface PluginFolder extends Folder {

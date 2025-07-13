@@ -1,4 +1,4 @@
 import Signal from "@rbxutil/signal";
 import { Location } from "../Types";
 
-export const GetLocations = new Signal<Location[]>();
+export const UpdateLocations = new Signal<[Location[]]>();

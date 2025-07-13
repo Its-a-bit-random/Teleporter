@@ -1,4 +1,4 @@
-import { PluginFolder } from "../Types";
+import { Location, PluginFolder } from "../Types";
 
 const CoreGui = game.GetService("CoreGui");
 
@@ -61,4 +61,19 @@ export function GetSharedPositionsFolder(pluginFolder: PluginFolder = GetPluginF
 	}
 
 	return foundFolder;
+}
+
+export function LoadLocationFromConfig(config: Configuration): Location {
+	return {
+		Position: (config.GetAttribute("Position") as CFrame) ?? new CFrame(-1, -1, -1),
+		Name: (config.GetAttribute("Name") as string) ?? "Failed to read name",
+		CreatedBy: (config.GetAttribute("CreatedBy") as string) ?? "Unknown",
+	};
+}
+
+export function CreateConfigFromLocation(location: Location) {
+	const config = new Instance("Configuration");
+	config.SetAttribute("Position", location.Position);
+	config.SetAttribute("Name", location.Name);
+	config.SetAttribute("CreatedBy", location.CreatedBy);
 }

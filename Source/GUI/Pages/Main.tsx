@@ -1,6 +1,8 @@
-import React, { useState } from "@rbxts/react";
+import React, { useEffect, useState } from "@rbxts/react";
 import { TextButton, TextLabel } from "../Components";
 import { Location } from "../../Types";
+import { GetLocations } from "../../Modules/Helper";
+import { UpdateLocations } from "../../Modules/Signals";
 
 function Location(props: { name: string; created: string; pos: string }) {
 	return (
@@ -85,9 +87,9 @@ function Locations(props: { locations: Location[] }) {
 			{props.locations.map((loc, index) => {
 				return (
 					<Location
-						name="My awesome location"
-						created="Created: 13th July 2025"
-						pos={`(${loc.CFrame.X}, ${loc.CFrame.Y}, ${loc.CFrame.Z})`}
+						name={loc.Name}
+						created={loc.CreatedBy}
+						pos={`(${loc.Position.X}, ${loc.Position.Y}, ${loc.Position.Z})`}
 					/>
 				);
 			})}
@@ -96,8 +98,17 @@ function Locations(props: { locations: Location[] }) {
 }
 
 export default () => {
-	const [peopleToggle, setPeopleToggle] = useState(true);
-	const [locationsToggle, setLocationsToggle] = useState(true);
+	const [locations, setLocations] = useState<Location[]>([]);
+
+	useEffect(() => {
+		const conn = UpdateLocations.Connect((locations) => {
+			print(locations);
+			setLocations(locations);
+			print("Updated");
+		});
+
+		return () => conn.Disconnect();
+	}, [setLocations]);
 
 	return (
 		<frame Size={UDim2.fromScale(1, 1)} BackgroundTransparency={1}>
@@ -147,7 +158,7 @@ export default () => {
 					FillDirection={Enum.FillDirection.Vertical}
 				/>
 
-				<Locations locations={[{ CFrame: new CFrame(0, 0, 0) }]} />
+				<Locations locations={locations} />
 			</scrollingframe>
 
 			<TextButton

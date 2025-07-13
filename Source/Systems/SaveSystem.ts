@@ -8,7 +8,7 @@ export default class SaveSystem {
 
 	public LoadLocations() {
 		const id = game.PlaceId;
-		const loaded = this.Studio.plugin.GetSetting(tostring(id));
+		const loaded = this.Studio.plugin.GetSetting(tostring(id)) as Location[];
 
 		if (loaded) {
 			return loaded;
