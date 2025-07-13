@@ -101,7 +101,12 @@ export default () => {
 
 	return (
 		<frame Size={UDim2.fromScale(1, 1)} BackgroundTransparency={1}>
-			<frame key={"Filters"} BackgroundTransparency={1} Size={new UDim2(1, 0, 0, 50)}>
+			<frame
+				key={"Players"}
+				BackgroundTransparency={1}
+				Position={UDim2.fromOffset(0, 10)}
+				Size={new UDim2(1, 0, 0, 30)}
+			>
 				<uilistlayout
 					key={"Layout"}
 					SortOrder={Enum.SortOrder.LayoutOrder}
@@ -110,49 +115,11 @@ export default () => {
 					VerticalAlignment={Enum.VerticalAlignment.Center}
 				/>
 
-				<TextButton
-					key={"PeopleToggle"}
-					Text={"People"}
-					LayoutOrder={1}
-					BackgroundTransparency={peopleToggle ? 0 : 1}
-					BackgroundColor3={Color3.fromRGB(225, 56, 53)}
-					Size={UDim2.fromOffset(98, 34)}
-					Event={{
-						MouseButton1Click: () => {
-							setPeopleToggle(!peopleToggle);
-						},
-					}}
-				>
-					<uistroke
-						key={"Stroke"}
-						Thickness={1}
-						Color={Color3.fromRGB(100, 100, 100)}
-						Enabled={!peopleToggle}
-						ApplyStrokeMode={Enum.ApplyStrokeMode.Border}
-					/>
-				</TextButton>
-
-				<TextButton
-					key={"LocationsToggle"}
-					Text={"Locations"}
-					LayoutOrder={2}
-					BackgroundTransparency={locationsToggle ? 0 : 1}
-					BackgroundColor3={Color3.fromRGB(225, 56, 53)}
-					Size={UDim2.fromOffset(98, 34)}
-					Event={{
-						MouseButton1Click: () => {
-							setLocationsToggle(!locationsToggle);
-						},
-					}}
-				>
-					<uistroke
-						key={"Stroke"}
-						Thickness={1}
-						Color={Color3.fromRGB(100, 100, 100)}
-						Enabled={!locationsToggle}
-						ApplyStrokeMode={Enum.ApplyStrokeMode.Border}
-					/>
-				</TextButton>
+				<imagebutton
+					Size={UDim2.fromOffset(48, 48)}
+					BackgroundTransparency={1}
+					ScaleType={Enum.ScaleType.Fit}
+				/>
 			</frame>
 
 			<scrollingframe
