@@ -1,0 +1,119 @@
+import React from "@rbxts/react";
+import { TextButton, TextLabel } from "../Components";
+
+export default () => {
+	return (
+		<frame Size={UDim2.fromScale(1, 1)} BackgroundTransparency={1}>
+			<uilistlayout
+				key={"Layout"}
+				SortOrder={Enum.SortOrder.LayoutOrder}
+				VerticalAlignment={Enum.VerticalAlignment.Center}
+				HorizontalAlignment={Enum.HorizontalAlignment.Center}
+				Padding={new UDim(0, 10)}
+			/>
+
+			<frame key={"LocationNote"} BackgroundTransparency={1} Size={new UDim2(1, -20, 0, 50)} LayoutOrder={0}>
+				<TextLabel
+					key={"Text"}
+					Size={UDim2.fromScale(1, 1)}
+					BackgroundTransparency={1}
+					TextSize={16}
+					FontFace={
+						new Font(
+							"rbxasset://fonts/families/GothamSSm.json",
+							Enum.FontWeight.Light,
+							Enum.FontStyle.Normal,
+						)
+					}
+					Text={"Saving location: (0, 0, 0)"}
+					TextYAlignment={Enum.TextYAlignment.Bottom}
+				/>
+			</frame>
+
+			<textbox
+				key={"NameInput"}
+				BackgroundTransparency={1}
+				LayoutOrder={1}
+				Size={new UDim2(1, -20, 0, 30)}
+				FontFace={
+					new Font("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+				}
+				PlaceholderText={"Location Name"}
+				Text={""}
+				TextColor3={new Color3(1, 1, 1)}
+				TextSize={25}
+				TextWrapped={true}
+			>
+				<uicorner key={"Corners"} CornerRadius={new UDim(0, 10)} />
+				<uistroke
+					key={"Stroke"}
+					ApplyStrokeMode={Enum.ApplyStrokeMode.Border}
+					Color={Color3.fromRGB(100, 100, 100)}
+				/>
+			</textbox>
+
+			<frame
+				key={"Actions"}
+				Size={new UDim2(1, -20, 0, 50)}
+				BackgroundTransparency={1}
+				BorderSizePixel={0}
+				LayoutOrder={2}
+			>
+				<uilistlayout
+					key={"Layout"}
+					FillDirection={Enum.FillDirection.Horizontal}
+					SortOrder={Enum.SortOrder.LayoutOrder}
+					HorizontalAlignment={Enum.HorizontalAlignment.Center}
+					HorizontalFlex={Enum.UIFlexAlignment.SpaceEvenly}
+					VerticalAlignment={Enum.VerticalAlignment.Center}
+				/>
+
+				<TextButton
+					key={"Create"}
+					LayoutOrder={2}
+					Size={UDim2.fromOffset(150, 34)}
+					BackgroundColor3={Color3.fromRGB(255, 56, 53)}
+					BorderSizePixel={0}
+					Text={"Create"}
+					TextSize={18}
+				/>
+
+				<TextButton
+					key={"CreateShared"}
+					LayoutOrder={1}
+					Size={UDim2.fromOffset(150, 34)}
+					BackgroundColor3={Color3.fromRGB(255, 56, 53)}
+					BackgroundTransparency={1}
+					Text={"Create Shared"}
+					TextSize={18}
+				>
+					<uistroke ApplyStrokeMode={Enum.ApplyStrokeMode.Border} Color={Color3.fromRGB(100, 100, 100)} />
+				</TextButton>
+			</frame>
+
+			<frame
+				key={"Shared warning note"}
+				BackgroundTransparency={1}
+				Size={new UDim2(1, -20, 0, 50)}
+				LayoutOrder={3}
+			>
+				<TextLabel
+					key={"Text"}
+					Size={UDim2.fromScale(1, 1)}
+					BackgroundTransparency={1}
+					TextSize={16}
+					FontFace={
+						new Font(
+							"rbxasset://fonts/families/GothamSSm.json",
+							Enum.FontWeight.Light,
+							Enum.FontStyle.Normal,
+						)
+					}
+					Text={"A shared location shows up for everyone using the plugin in this place!"}
+					TextWrapped={true}
+					TextYAlignment={Enum.TextYAlignment.Top}
+				/>
+			</frame>
+		</frame>
+	);
+};

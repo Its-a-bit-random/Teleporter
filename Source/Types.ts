@@ -9,5 +9,5 @@ export interface PluginFolder extends Folder {
 
 export const enum GuiPage {
 	Main,
-	Save,
+	Edit,
 }

@@ -1,6 +1,7 @@
 import React, { useState } from "@rbxts/react";
 import { GuiPage } from "../Types";
 import Main from "./Pages/Main";
+import Edit from "./Pages/Edit";
 
 export default () => {
 	const [page, SetPage] = useState(GuiPage.Main);
@@ -10,6 +11,8 @@ export default () => {
 			<Main />
 		</>
 	) : (
-		<></>
+		<>
+			<Edit />
+		</>
 	);
 };
