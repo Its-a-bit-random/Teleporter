@@ -2,7 +2,7 @@ import { Button, Dependency, GUI, OnStart, Studio, System } from "@rbxts/comet";
 import React from "@rbxts/react";
 import { createPortal, createRoot } from "@rbxts/react-roblox";
 import { Workspace } from "@rbxts/services";
-import Main from "../GUI/Main";
+import App from "../GUI/App";
 
 @System()
 export class GuiSystem implements OnStart {
@@ -22,7 +22,7 @@ export class GuiSystem implements OnStart {
 
 		widget.mount((root) => {
 			const reactRoot = createRoot(root);
-			reactRoot.render(createPortal(React.createElement(Main), root));
+			reactRoot.render(createPortal(React.createElement(App), root));
 			return () => reactRoot.unmount();
 		});
 	}

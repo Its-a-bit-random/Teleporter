@@ -1,6 +1,6 @@
 import React, { useState } from "@rbxts/react";
-import { Location } from "../Types";
-import { TextButton, TextLabel } from "./Components";
+import { TextButton, TextLabel } from "../Components";
+import { Location } from "../../Types";
 
 function Location(props: { name: string; created: string; pos: string }) {
 	return (
