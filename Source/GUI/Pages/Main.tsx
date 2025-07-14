@@ -20,31 +20,25 @@ function Location(props: { name: string; created: string; pos: CFrame; instance?
 				key={"TpButton"}
 				Text={"GO"}
 				LayoutOrder={1}
-				BackgroundTransparency={1}
-				BackgroundColor3={Color3.fromRGB(225, 56, 53)}
-				Size={UDim2.fromOffset(70, 25)}
+				BackgroundColor3={Color3.fromRGB(49, 121, 255)}
+				BorderSizePixel={0}
+				Size={UDim2.fromOffset(70, 20)}
 				AnchorPoint={new Vector2(1, 1)}
-				Position={UDim2.fromScale(1, 1)}
+				Position={new UDim2(1, -30, 1, 0)}
 				Event={{
 					MouseButton1Click: () => TeleportCamera(props.pos),
 				}}
-			>
-				<uistroke
-					key={"Stroke"}
-					Thickness={1}
-					Color={Color3.fromRGB(100, 100, 100)}
-					ApplyStrokeMode={Enum.ApplyStrokeMode.Border}
-				/>
-			</TextButton>
+			/>
 
 			<imagebutton
 				key={"DeleteButton"}
 				Size={UDim2.fromOffset(25, 25)}
-				Position={new UDim2(1, -75, 1, 0)}
+				Position={new UDim2(1, 0, 1, 0)}
 				Image={"rbxassetid://15928976491"}
 				ScaleType={Enum.ScaleType.Fit}
 				AnchorPoint={new Vector2(1, 1)}
 				BackgroundTransparency={1}
+				ImageColor3={Color3.fromRGB(225, 56, 53)}
 				Event={{
 					MouseButton1Click: () => {
 						props.instance?.Destroy();
@@ -192,14 +186,14 @@ export default () => {
 
 			<scrollingframe
 				key={"Locations"}
-				Size={new UDim2(1, 0, 1, -100)}
-				Position={UDim2.fromOffset(0, 50)}
+				Size={new UDim2(1, 0, 1, -120)}
+				Position={UDim2.fromOffset(0, 70)}
 				BackgroundTransparency={1}
 				BorderSizePixel={0}
 				ScrollBarThickness={5}
 				ScrollBarImageColor3={new Color3(1, 1, 1)}
 				AutomaticCanvasSize={Enum.AutomaticSize.Y}
-				CanvasSize={new UDim2(0, 0, 1, -100)}
+				CanvasSize={new UDim2(0, 0, 1, -120)}
 			>
 				<uipadding
 					key={"Padding"}
@@ -223,7 +217,7 @@ export default () => {
 				Text={"+ Save Location"}
 				BackgroundColor3={Color3.fromRGB(225, 56, 53)}
 				BorderSizePixel={0}
-				Size={new UDim2(1, -20, 0, 30)}
+				Size={new UDim2(1, -20, 0, 20)}
 				Position={new UDim2(0.5, 0, 1, -10)}
 				AnchorPoint={new Vector2(0.5, 1)}
 				Event={{

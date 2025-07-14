@@ -16,8 +16,8 @@ export class GuiSystem implements OnStart {
 	onStart(): void | Promise<void> {
 		const widget = this.GUI.createWidget(
 			"Teleporter",
-			new Vector2(350, 500),
-			new Vector2(350, 500),
+			new Vector2(250, 500),
+			new Vector2(250, 500),
 			Enum.InitialDockState.Float,
 		);
 

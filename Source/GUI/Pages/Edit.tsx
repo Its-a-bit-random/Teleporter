@@ -65,24 +65,23 @@ export default (props: { editCFrame: CFrame }) => {
 
 			<frame
 				key={"Actions"}
-				Size={new UDim2(1, -20, 0, 50)}
+				Size={new UDim2(1, -20, 0, 90)}
 				BackgroundTransparency={1}
 				BorderSizePixel={0}
 				LayoutOrder={2}
 			>
 				<uilistlayout
 					key={"Layout"}
-					FillDirection={Enum.FillDirection.Horizontal}
+					Padding={new UDim(0, 10)}
 					SortOrder={Enum.SortOrder.LayoutOrder}
 					HorizontalAlignment={Enum.HorizontalAlignment.Center}
-					HorizontalFlex={Enum.UIFlexAlignment.SpaceEvenly}
 					VerticalAlignment={Enum.VerticalAlignment.Center}
 				/>
 
 				<TextButton
 					key={"Create"}
 					LayoutOrder={2}
-					Size={UDim2.fromOffset(150, 34)}
+					Size={new UDim2(1, 0, 0, 34)}
 					BackgroundColor3={Color3.fromRGB(255, 56, 53)}
 					BorderSizePixel={0}
 					Text={"Create"}
@@ -102,10 +101,10 @@ export default (props: { editCFrame: CFrame }) => {
 
 				<TextButton
 					key={"CreateShared"}
-					LayoutOrder={1}
+					LayoutOrder={2}
 					Size={UDim2.fromOffset(150, 34)}
-					BackgroundColor3={Color3.fromRGB(255, 56, 53)}
-					BackgroundTransparency={1}
+					BackgroundColor3={Color3.fromRGB(49, 121, 255)}
+					BorderSizePixel={0}
 					Text={"Create Shared"}
 					TextSize={18}
 					Event={{
@@ -114,13 +113,11 @@ export default (props: { editCFrame: CFrame }) => {
 							CreateConfigFromLocation({
 								Name: locName,
 								Position: props.editCFrame,
-								CreatedBy: `By @${Players.LocalPlayer.Name} (${DateTime.now().ToIsoDate()})`,
+								CreatedBy: `By @${Players.LocalPlayer.Name}`,
 							});
 						},
 					}}
-				>
-					<uistroke ApplyStrokeMode={Enum.ApplyStrokeMode.Border} Color={Color3.fromRGB(100, 100, 100)} />
-				</TextButton>
+				/>
 			</frame>
 
 			<frame
