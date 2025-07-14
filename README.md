@@ -20,10 +20,9 @@
 
 ## 🛠 Installation
 
-Get the plugin from Roblox Creator Marketplace:
-   [Teleporter on Roblox](#)
+Get the plugin from Roblox [Creator Marketplace](https://create.roblox.com/store/asset/76068071147778/Teleporter)
 
-Or you can install manually from github [here](https://github.com/Its-a-bit-random/Teleporter/releases/latest)
+Or you can install manually from [github](https://github.com/Its-a-bit-random/Teleporter/releases/latest)
 
 ## 🚀 How to Use
 
