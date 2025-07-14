@@ -2,17 +2,12 @@ import { Dependency, Studio } from "@rbxts/comet";
 import SaveSystem from "../Systems/SaveSystem";
 import { Location } from "../Types";
 import { GetSharedPositionsFolder, LoadLocationFromConfig } from "./Config";
+import { UpdateLocations } from "./Signals";
 
-export function GetLocations() {
-	const SaveSystemClass = Dependency(SaveSystem);
-	const locations = SaveSystemClass.LoadLocations();
-	const instances = GetSharedPositionsFolder();
+export function SendUpdateLocations(locations: Location[]) {
+	GetSharedPositionsFolder()
+		.GetChildren()
+		.forEach((value) => locations.push(LoadLocationFromConfig(value as Configuration)));
 
-	const sharedLocations: Location[] = [];
-
-	instances.GetChildren().forEach((config) => {
-		sharedLocations.push(LoadLocationFromConfig(config as Configuration));
-	});
-
-	return $tuple(locations, sharedLocations);
+	UpdateLocations.Fire(locations);
 }

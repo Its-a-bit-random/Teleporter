@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "@rbxts/react";
 import { TextButton, TextLabel } from "../Components";
 import { Location } from "../../Types";
-import { GetLocations } from "../../Modules/Helper";
 import { UpdateLocations } from "../../Modules/Signals";
 
 function Location(props: { name: string; created: string; pos: string }) {
