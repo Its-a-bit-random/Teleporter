@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "@rbxts/react";
 import { TextButton, TextLabel } from "../Components";
 import { Location } from "../../Types";
 import { DeletePrivateLocation, GoToEditPage, UpdateLocations } from "../../Modules/Signals";
-import { Workspace } from "@rbxts/services";
+import { Players, Workspace } from "@rbxts/services";
 import { GetCameraCFrame } from "../../Modules/Helper";
 import { subscribe } from "@rbxts/charm";
 import { displayLocations } from "../../Modules/State";
+import { GetPlayerPositionsFolder } from "../../Modules/Config";
 
 function Location(props: { name: string; created: string; pos: string; instance?: Configuration; saveId?: string }) {
 	if (props.pos === undefined) {
@@ -142,11 +143,42 @@ export default () => {
 					VerticalAlignment={Enum.VerticalAlignment.Center}
 				/>
 
-				<imagebutton
-					Size={UDim2.fromOffset(48, 48)}
-					BackgroundTransparency={1}
-					ScaleType={Enum.ScaleType.Fit}
-				/>
+				{GetPlayerPositionsFolder().GetChildren().size() <= 1 ? (
+					<TextLabel
+						Size={UDim2.fromScale(1, 1)}
+						Text={"No players to teleport to :("}
+						FontFace={
+							new Font(
+								"rbxasset://fonts/families/GothamSSm.json",
+								Enum.FontWeight.Light,
+								Enum.FontStyle.Normal,
+							)
+						}
+					/>
+				) : undefined}
+
+				{GetPlayerPositionsFolder()
+					.GetChildren()
+					.map((instance) => {
+						const userId = tonumber(instance.Name) as number;
+
+						if (userId === Players.LocalPlayer.UserId) return;
+
+						return (
+							<imagebutton
+								Size={UDim2.fromOffset(48, 48)}
+								BackgroundTransparency={1}
+								ScaleType={Enum.ScaleType.Fit}
+								Image={
+									Players.GetUserThumbnailAsync(
+										userId,
+										Enum.ThumbnailType.HeadShot,
+										Enum.ThumbnailSize.Size48x48,
+									)[0]
+								}
+							/>
+						);
+					})}
 			</frame>
 
 			<scrollingframe
