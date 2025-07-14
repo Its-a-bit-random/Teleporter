@@ -43,7 +43,3 @@ Or you can install manually from github [here](https://github.com/Its-a-bit-rand
 ## 📝 License
 
 Source code is licensed under the MIT license!
-
----
-
-**Happy building!**
