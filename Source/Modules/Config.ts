@@ -68,6 +68,7 @@ export function LoadLocationFromConfig(config: Configuration): Location {
 		Position: (config.GetAttribute("Position") as CFrame) ?? new CFrame(-1, -1, -1),
 		Name: (config.GetAttribute("Name") as string) ?? "Failed to read name",
 		CreatedBy: (config.GetAttribute("CreatedBy") as string) ?? "Unknown",
+		SharedConfigInstance: config,
 	};
 }
 
@@ -76,4 +77,5 @@ export function CreateConfigFromLocation(location: Location) {
 	config.SetAttribute("Position", location.Position);
 	config.SetAttribute("Name", location.Name);
 	config.SetAttribute("CreatedBy", location.CreatedBy);
+	config.Parent = GetSharedPositionsFolder();
 }

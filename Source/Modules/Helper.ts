@@ -3,6 +3,7 @@ import SaveSystem from "../Systems/SaveSystem";
 import { Location } from "../Types";
 import { GetSharedPositionsFolder, LoadLocationFromConfig } from "./Config";
 import { UpdateLocations } from "./Signals";
+import { Workspace } from "@rbxts/services";
 
 export function SendUpdateLocations(locations: Location[]) {
 	GetSharedPositionsFolder()
@@ -10,4 +11,16 @@ export function SendUpdateLocations(locations: Location[]) {
 		.forEach((value) => locations.push(LoadLocationFromConfig(value as Configuration)));
 
 	UpdateLocations.Fire(locations);
+}
+
+export function GetCameraCFrame() {
+	const cframe = Workspace.CurrentCamera!.CFrame;
+
+	const newPosition = new Vector3(
+		math.round(cframe.Position.X),
+		math.round(cframe.Position.Y),
+		math.round(cframe.Position.Z),
+	);
+
+	return new CFrame(newPosition);
 }

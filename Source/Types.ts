@@ -2,6 +2,7 @@ export interface Location {
 	Position: CFrame;
 	CreatedBy: string;
 	Name: string;
+	SharedConfigInstance?: Configuration;
 }
 
 export interface PluginFolder extends Folder {

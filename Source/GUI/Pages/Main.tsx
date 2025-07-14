@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "@rbxts/react";
 import { TextButton, TextLabel } from "../Components";
 import { Location } from "../../Types";
-import { UpdateLocations } from "../../Modules/Signals";
+import { GoToEditPage, UpdateLocations } from "../../Modules/Signals";
+import { Workspace } from "@rbxts/services";
+import { GetCameraCFrame } from "../../Modules/Helper";
 
-function Location(props: { name: string; created: string; pos: string }) {
+function Location(props: { name: string; created: string; pos: string; instance?: Configuration }) {
 	return (
 		<frame Size={new UDim2(1, 0, 0, 75)} BackgroundTransparency={1}>
 			<TextButton
@@ -32,6 +34,9 @@ function Location(props: { name: string; created: string; pos: string }) {
 				ScaleType={Enum.ScaleType.Fit}
 				AnchorPoint={new Vector2(1, 1)}
 				BackgroundTransparency={1}
+				Event={{
+					MouseButton1Click: () => props.instance?.Destroy(),
+				}}
 			/>
 
 			<TextLabel
@@ -89,6 +94,7 @@ function Locations(props: { locations: Location[] }) {
 						name={loc.Name}
 						created={loc.CreatedBy}
 						pos={`(${loc.Position.X}, ${loc.Position.Y}, ${loc.Position.Z})`}
+						instance={loc.SharedConfigInstance}
 					/>
 				);
 			})}
@@ -168,6 +174,9 @@ export default () => {
 				Size={new UDim2(1, -20, 0, 30)}
 				Position={new UDim2(0.5, 0, 1, -10)}
 				AnchorPoint={new Vector2(0.5, 1)}
+				Event={{
+					MouseButton1Click: () => GoToEditPage.Fire(GetCameraCFrame()),
+				}}
 			/>
 		</frame>
 	);

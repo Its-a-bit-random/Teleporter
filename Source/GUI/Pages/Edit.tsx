@@ -1,7 +1,12 @@
-import React from "@rbxts/react";
+import React, { useRef, useState } from "@rbxts/react";
 import { TextButton, TextLabel } from "../Components";
+import { GoToMainPage } from "../../Modules/Signals";
+import { CreateConfigFromLocation } from "../../Modules/Config";
+import { Players } from "@rbxts/services";
 
-export default () => {
+export default (props: { editCFrame: CFrame }) => {
+	const [locName, setLocName] = useState("Unnamed Location");
+
 	return (
 		<frame Size={UDim2.fromScale(1, 1)} BackgroundTransparency={1}>
 			<uilistlayout
@@ -25,7 +30,7 @@ export default () => {
 							Enum.FontStyle.Normal,
 						)
 					}
-					Text={"Saving location: (0, 0, 0)"}
+					Text={`Saving location: (${props.editCFrame.Position.X}, ${props.editCFrame.Position.Y}, ${props.editCFrame.Position.Z})`}
 					TextYAlignment={Enum.TextYAlignment.Bottom}
 				/>
 			</frame>
@@ -43,6 +48,12 @@ export default () => {
 				TextColor3={new Color3(1, 1, 1)}
 				TextSize={25}
 				TextWrapped={true}
+				ClearTextOnFocus={false}
+				Event={{
+					FocusLost: (rbx) => {
+						setLocName(rbx.Text);
+					},
+				}}
 			>
 				<uicorner key={"Corners"} CornerRadius={new UDim(0, 10)} />
 				<uistroke
@@ -86,6 +97,18 @@ export default () => {
 					BackgroundTransparency={1}
 					Text={"Create Shared"}
 					TextSize={18}
+					Event={{
+						MouseButton1Click: () => {
+							GoToMainPage.Fire();
+							task.delay(1, () =>
+								CreateConfigFromLocation({
+									Name: locName,
+									Position: props.editCFrame,
+									CreatedBy: `By @${Players.LocalPlayer.Name} (${DateTime.now().ToIsoDate()})`,
+								}),
+							);
+						},
+					}}
 				>
 					<uistroke ApplyStrokeMode={Enum.ApplyStrokeMode.Border} Color={Color3.fromRGB(100, 100, 100)} />
 				</TextButton>
