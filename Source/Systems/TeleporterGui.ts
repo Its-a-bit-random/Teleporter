@@ -34,7 +34,6 @@ export class GuiSystem implements OnStart {
 				.GetChildren()
 				.forEach((value) => locations.push(LoadLocationFromConfig(value as Configuration)));
 
-			task.wait(1);
 			UpdateLocations.Fire(locations);
 			return () => reactRoot.unmount();
 		});

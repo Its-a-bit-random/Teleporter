@@ -100,13 +100,11 @@ export default (props: { editCFrame: CFrame }) => {
 					Event={{
 						MouseButton1Click: () => {
 							GoToMainPage.Fire();
-							task.delay(1, () =>
-								CreateConfigFromLocation({
-									Name: locName,
-									Position: props.editCFrame,
-									CreatedBy: `By @${Players.LocalPlayer.Name} (${DateTime.now().ToIsoDate()})`,
-								}),
-							);
+							CreateConfigFromLocation({
+								Name: locName,
+								Position: props.editCFrame,
+								CreatedBy: `By @${Players.LocalPlayer.Name} (${DateTime.now().ToIsoDate()})`,
+							});
 						},
 					}}
 				>

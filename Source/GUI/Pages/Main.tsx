@@ -4,6 +4,8 @@ import { Location } from "../../Types";
 import { GoToEditPage, UpdateLocations } from "../../Modules/Signals";
 import { Workspace } from "@rbxts/services";
 import { GetCameraCFrame } from "../../Modules/Helper";
+import { subscribe } from "@rbxts/charm";
+import { displayLocations } from "../../Modules/State";
 
 function Location(props: { name: string; created: string; pos: string; instance?: Configuration }) {
 	return (
@@ -103,16 +105,11 @@ function Locations(props: { locations: Location[] }) {
 }
 
 export default () => {
-	const [locations, setLocations] = useState<Location[]>([]);
+	const [locations, setLocations] = useState<Location[]>(() => displayLocations());
 
 	useEffect(() => {
-		const conn = UpdateLocations.Connect((locations) => {
-			print(locations);
-			setLocations(locations);
-			print("Updated");
-		});
-
-		return () => conn.Disconnect();
+		const cleanup = subscribe(displayLocations, (state) => setLocations(state));
+		return () => cleanup();
 	}, [setLocations]);
 
 	return (
