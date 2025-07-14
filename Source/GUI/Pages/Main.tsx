@@ -62,7 +62,7 @@ function Location(props: { name: string; created: string; pos: string; instance?
 				key={"Created"}
 				Size={new UDim2(1, 0, 0, 30)}
 				Position={UDim2.fromOffset(0, 30)}
-				Text={props.created}
+				Text={props.saveId ? "[PRIVATE LOCATION]" : props.created}
 				FontFace={
 					new Font(
 						"rbxasset://fonts/families/GothamSSm.json",
