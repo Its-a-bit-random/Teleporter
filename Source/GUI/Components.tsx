@@ -8,6 +8,7 @@ export function TextButton(props: TextButtonProps) {
 			BorderSizePixel={0}
 			TextColor3={new Color3(1, 1, 1)}
 			TextSize={18}
+			TextWrapped={true}
 			{...props}
 		>
 			{props.children}

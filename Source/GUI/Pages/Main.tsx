@@ -136,7 +136,7 @@ export default () => {
 				key={"Players"}
 				BackgroundTransparency={1}
 				Position={UDim2.fromOffset(0, 10)}
-				Size={new UDim2(1, 0, 0, 30)}
+				Size={new UDim2(1, 0, 0, 60)}
 			>
 				<uilistlayout
 					key={"Layout"}
@@ -149,7 +149,10 @@ export default () => {
 				{GetPlayerPositionsFolder().GetChildren().size() <= 1 ? (
 					<TextLabel
 						Size={UDim2.fromScale(1, 1)}
-						Text={"No players to teleport to :("}
+						Text={
+							"No players to teleport to :( (To teleport to a player they must have this plugin installed too!)"
+						}
+						TextWrapped={true}
 						FontFace={
 							new Font(
 								"rbxasset://fonts/families/GothamSSm.json",
