@@ -30,7 +30,7 @@ export default (props: { editCFrame: CFrame }) => {
 							Enum.FontStyle.Normal,
 						)
 					}
-					Text={`Saving location: (${props.editCFrame.Position.X}, ${props.editCFrame.Position.Y}, ${props.editCFrame.Position.Z})`}
+					Text={`Saving location: (${math.round(props.editCFrame.Position.X)}, ${math.round(props.editCFrame.Position.Y)}, ${math.round(props.editCFrame.Position.Z)})`}
 					TextYAlignment={Enum.TextYAlignment.Bottom}
 				/>
 			</frame>

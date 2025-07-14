@@ -77,7 +77,7 @@ function Location(props: { name: string; created: string; pos: CFrame; instance?
 				key={"Position"}
 				Size={new UDim2(1, 0, 0, 30)}
 				Position={UDim2.fromOffset(0, 35)}
-				Text={`(${props.pos.Position.X}, ${props.pos.Position.Y}, ${props.pos.Position.Z})`}
+				Text={`(${math.round(props.pos.Position.X)}, ${math.round(props.pos.Position.Y)}, ${math.round(props.pos.Position.Z)})`}
 				FontFace={
 					new Font(
 						"rbxasset://fonts/families/GothamSSm.json",

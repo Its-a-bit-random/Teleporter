@@ -1,14 +1,14 @@
-import { Location, PluginFolder } from "../Types";
-
-const CoreGui = game.GetService("CoreGui");
+import { Workspace } from "@rbxts/services";
+import { CONSTANTS, Location, PluginFolder } from "../Types";
 
 export function GetRootFolder() {
-	const foundFolder = CoreGui.FindFirstChild("Its-a-bit-random-plugins");
+	const foundFolder = Workspace.Terrain.FindFirstChild(CONSTANTS.PluginRootFolderName);
 
 	if (foundFolder === undefined) {
 		const newFolder = new Instance("Folder");
-		newFolder.Name = "Its-a-bit-random-plugins";
-		newFolder.Parent = CoreGui;
+		newFolder.Name = CONSTANTS.PluginRootFolderName;
+		newFolder.Archivable = false;
+		newFolder.Parent = Workspace.Terrain;
 		return newFolder;
 	}
 
@@ -22,7 +22,8 @@ export function GetPluginFolder() {
 
 	if (pluginFolder === undefined) {
 		const newFolder = new Instance("Folder") as PluginFolder;
-		newFolder.Name = "Teleporter";
+		newFolder.Name = CONSTANTS.PluginFolderName;
+		newFolder.Archivable = false;
 		newFolder.Parent = root;
 
 		GetSharedPositionsFolder(newFolder);
@@ -43,6 +44,7 @@ export function GetPlayerPositionsFolder(pluginFolder: PluginFolder = GetPluginF
 	if (foundFolder === undefined) {
 		const positionsFolder = new Instance("Folder");
 		positionsFolder.Name = "PlayerPositions";
+		positionsFolder.Archivable = false;
 		positionsFolder.Parent = pluginFolder;
 		return positionsFolder;
 	}
@@ -56,6 +58,7 @@ export function GetSharedPositionsFolder(pluginFolder: PluginFolder = GetPluginF
 	if (foundFolder === undefined) {
 		const positionsFolder = new Instance("Folder");
 		positionsFolder.Name = "SharedPositions";
+		positionsFolder.Archivable = false;
 		positionsFolder.Parent = pluginFolder;
 		return positionsFolder;
 	}
@@ -73,9 +76,12 @@ export function LoadLocationFromConfig(config: Configuration): Location {
 }
 
 export function CreateConfigFromLocation(location: Location) {
+	print("Saving shared location:", location);
+
 	const config = new Instance("Configuration");
 	config.SetAttribute("Position", location.Position);
 	config.SetAttribute("Name", location.Name);
 	config.SetAttribute("CreatedBy", location.CreatedBy);
+	config.Archivable = false;
 	config.Parent = GetSharedPositionsFolder();
 }

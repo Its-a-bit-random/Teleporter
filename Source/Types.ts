@@ -15,3 +15,8 @@ export const enum GuiPage {
 	Main,
 	Edit,
 }
+
+export const enum CONSTANTS {
+	PluginRootFolderName = "Plugins by Its a bit random",
+	PluginFolderName = "Teleporter",
+}

@@ -1,9 +1,9 @@
-import { Dependency, OnHeartbeat, OnStart, Studio, System } from "@rbxts/comet";
+import { Dependency, OnEnd, OnHeartbeat, OnStart, Studio, System, Track } from "@rbxts/comet";
 import { Players, Workspace } from "@rbxts/services";
 import { GetPlayerPositionsFolder } from "../Modules/Config";
 
 @System()
-export default class LocationWatcher implements OnHeartbeat {
+export default class LocationWatcher implements OnHeartbeat, OnEnd {
 	public GetPositionValue(player: Player) {
 		const foundPos = GetPlayerPositionsFolder().FindFirstChild(player.UserId) as CFrameValue | undefined;
 
@@ -31,5 +31,9 @@ export default class LocationWatcher implements OnHeartbeat {
 
 		const cameraCFrame = camera.CFrame;
 		this._SetPositionValue(player, cameraCFrame);
+	}
+
+	onEnd(): void {
+		if (Players.LocalPlayer) this.GetPositionValue(Players.LocalPlayer).Destroy();
 	}
 }

@@ -15,20 +15,10 @@ export function SendUpdateLocations(locations: Location[]) {
 
 export function GetCameraCFrame() {
 	const cframe = Workspace.CurrentCamera!.CFrame;
-
-	const newPosition = new Vector3(
-		math.round(cframe.Position.X),
-		math.round(cframe.Position.Y),
-		math.round(cframe.Position.Z),
-	);
-
-	return new CFrame(newPosition);
+	return cframe;
 }
 
 export function TeleportCamera(cframe: CFrame) {
 	const Camera = Workspace.CurrentCamera!;
-	Camera.CameraType = Enum.CameraType.Scriptable;
 	Camera.CFrame = cframe;
-	Camera.Focus = cframe;
-	Camera.CameraType = Enum.CameraType.Fixed;
 }
