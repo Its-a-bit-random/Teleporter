@@ -1,9 +1,10 @@
 import { Dependency, OnEnd, OnHeartbeat, OnStart, Studio, System, Track } from "@rbxts/comet";
 import { Players, Workspace } from "@rbxts/services";
 import { GetPlayerPositionsFolder } from "../Modules/Config";
+import { SendUpdatePlayerLocations } from "../Modules/Helper";
 
 @System()
-export default class LocationWatcher implements OnHeartbeat, OnEnd {
+export default class LocationWatcher implements OnHeartbeat, OnEnd, OnStart {
 	public GetPositionValue(player: Player) {
 		const foundPos = GetPlayerPositionsFolder().FindFirstChild(player.UserId) as CFrameValue | undefined;
 
@@ -34,6 +35,21 @@ export default class LocationWatcher implements OnHeartbeat, OnEnd {
 		const cameraCFrame = camera.CFrame;
 		const cameraFocus = camera.Focus;
 		this._SetPositionValue(player, cameraCFrame, cameraFocus);
+	}
+
+	onStart(): void | Promise<void> {
+		Track(
+			GetPlayerPositionsFolder().ChildAdded.Connect(() => {
+				SendUpdatePlayerLocations();
+			}),
+		);
+		Track(
+			GetPlayerPositionsFolder().ChildRemoved.Connect(() => {
+				SendUpdatePlayerLocations();
+			}),
+		);
+
+		SendUpdatePlayerLocations();
 	}
 
 	onEnd(): void {

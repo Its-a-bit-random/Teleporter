@@ -5,7 +5,7 @@ import { DeletePrivateLocation, GoToEditPage, UpdateLocations } from "../../Modu
 import { Players, Workspace } from "@rbxts/services";
 import { GetCameraCFrame, TeleportCamera } from "../../Modules/Helper";
 import { subscribe } from "@rbxts/charm";
-import { displayLocations } from "../../Modules/State";
+import { displayLocations, playerLocations } from "../../Modules/State";
 import { GetPlayerPositionsFolder } from "../../Modules/Config";
 
 function Location(props: {
@@ -124,11 +124,17 @@ function Locations(props: { locations: Location[] }) {
 
 export default () => {
 	const [locations, setLocations] = useState<Location[]>(() => displayLocations());
+	const [players, setPlayers] = useState<number[]>(() => playerLocations());
 
 	useEffect(() => {
-		const cleanup = subscribe(displayLocations, (state) => setLocations(state));
-		return () => cleanup();
-	}, [setLocations]);
+		const cleanupDisplayLocations = subscribe(displayLocations, (state) => setLocations(state));
+		const cleanupPlayerLocations = subscribe(playerLocations, (state) => setPlayers(state));
+
+		return () => {
+			cleanupDisplayLocations();
+			cleanupPlayerLocations();
+		};
+	}, [setLocations, setPlayers]);
 
 	return (
 		<frame Size={UDim2.fromScale(1, 1)} BackgroundTransparency={1}>
@@ -146,7 +152,7 @@ export default () => {
 					VerticalAlignment={Enum.VerticalAlignment.Center}
 				/>
 
-				{GetPlayerPositionsFolder().GetChildren().size() <= 1 ? (
+				{players.size() === 0 ? (
 					<TextLabel
 						Size={UDim2.fromScale(1, 1)}
 						Text={
@@ -161,37 +167,36 @@ export default () => {
 							)
 						}
 					/>
-				) : undefined}
+				) : (
+					<></>
+				)}
 
-				{GetPlayerPositionsFolder()
-					.GetChildren()
-					.map((instance) => {
-						const userId = tonumber(instance.Name) as number;
+				{players.map((userId) => {
+					if (userId === Players.LocalPlayer.UserId) return;
+					const instance = GetPlayerPositionsFolder().FindFirstChild(tostring(userId))!;
 
-						if (userId === Players.LocalPlayer.UserId) return;
-
-						return (
-							<imagebutton
-								Size={UDim2.fromOffset(48, 48)}
-								BackgroundTransparency={1}
-								ScaleType={Enum.ScaleType.Fit}
-								Image={
-									Players.GetUserThumbnailAsync(
-										userId,
-										Enum.ThumbnailType.HeadShot,
-										Enum.ThumbnailSize.Size48x48,
-									)[0]
-								}
-								Event={{
-									MouseButton1Click: () =>
-										TeleportCamera({
-											CFrame: (instance as CFrameValue).Value,
-											Focus: instance.GetAttribute("Focus") as CFrame,
-										}),
-								}}
-							/>
-						);
-					})}
+					return (
+						<imagebutton
+							Size={UDim2.fromOffset(48, 48)}
+							BackgroundTransparency={1}
+							ScaleType={Enum.ScaleType.Fit}
+							Image={
+								Players.GetUserThumbnailAsync(
+									userId,
+									Enum.ThumbnailType.HeadShot,
+									Enum.ThumbnailSize.Size48x48,
+								)[0]
+							}
+							Event={{
+								MouseButton1Click: () =>
+									TeleportCamera({
+										CFrame: (instance as CFrameValue).Value,
+										Focus: instance.GetAttribute("Focus") as CFrame,
+									}),
+							}}
+						/>
+					);
+				})}
 			</frame>
 
 			<scrollingframe
