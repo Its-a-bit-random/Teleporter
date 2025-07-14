@@ -3,6 +3,7 @@ import { HttpService } from "@rbxts/services";
 import { Location } from "../Types";
 import { GetSharedPositionsFolder } from "../Modules/Config";
 import { SendUpdateLocations } from "../Modules/Helper";
+import { CreatePrivateLocation, DeletePrivateLocation } from "../Modules/Signals";
 
 @System()
 export default class SaveSystem implements OnStart {
@@ -10,10 +11,24 @@ export default class SaveSystem implements OnStart {
 
 	public LoadLocations() {
 		const id = game.PlaceId;
-		const loaded = this.Studio.plugin.GetSetting(tostring(id)) as Location[];
+		const loaded = this.Studio.plugin.GetSetting(tostring(id) + "-DEV2") as string;
 
 		if (loaded) {
-			return loaded;
+			if (typeIs(loaded, "string")) {
+				const loadedInfo = HttpService.JSONDecode(loaded) as Location[];
+
+				const locations: Location[] = [];
+				loadedInfo.forEach((loc) => {
+					locations.push({
+						...loc,
+						Position: new CFrame(loc.Position.X, loc.Position.Y, loc.Position.Z),
+					});
+				});
+
+				return locations;
+			} else {
+				return loaded as Location[];
+			}
 		}
 
 		return [];
@@ -21,7 +36,7 @@ export default class SaveSystem implements OnStart {
 
 	public SaveLocations(locations: Location[]) {
 		const id = game.PlaceId;
-		this.Studio.plugin.SetSetting(tostring(id), locations);
+		this.Studio.plugin.SetSetting(tostring(id) + "-DEV2", HttpService.JSONEncode(locations));
 	}
 
 	private _TrackAttributeChangeAndReload(config: Instance, attrib: string) {
@@ -50,5 +65,42 @@ export default class SaveSystem implements OnStart {
 				this._TrackAttributeChangeAndReload(child, "CreatedBy");
 				this._TrackAttributeChangeAndReload(child, "Position");
 			});
+
+		Track(
+			CreatePrivateLocation.Connect((newLocation) => {
+				const locations = this.LoadLocations();
+
+				newLocation = {
+					...newLocation,
+					Position: {
+						X: newLocation.Position.X,
+						Y: newLocation.Position.Y,
+						Z: newLocation.Position.Z,
+					} as unknown as CFrame,
+					PrivateSaveId: HttpService.GenerateGUID(false),
+				};
+
+				locations.push(newLocation);
+				this.SaveLocations(locations);
+
+				SendUpdateLocations(this.LoadLocations());
+			}),
+		);
+
+		Track(
+			DeletePrivateLocation.Connect((saveId) => {
+				const locations = this.LoadLocations();
+				const index = locations.findIndex((loc) => loc.PrivateSaveId === saveId);
+
+				if (index === undefined) {
+					warn("Couldnt find location from saveId");
+					return;
+				}
+
+				locations.remove(index);
+				this.SaveLocations(locations);
+				SendUpdateLocations(locations);
+			}),
+		);
 	}
 }

@@ -3,6 +3,7 @@ export interface Location {
 	CreatedBy: string;
 	Name: string;
 	SharedConfigInstance?: Configuration;
+	PrivateSaveId?: string;
 }
 
 export interface PluginFolder extends Folder {

@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from "@rbxts/react";
 import { TextButton, TextLabel } from "../Components";
 import { Location } from "../../Types";
-import { GoToEditPage, UpdateLocations } from "../../Modules/Signals";
+import { DeletePrivateLocation, GoToEditPage, UpdateLocations } from "../../Modules/Signals";
 import { Workspace } from "@rbxts/services";
 import { GetCameraCFrame } from "../../Modules/Helper";
 import { subscribe } from "@rbxts/charm";
 import { displayLocations } from "../../Modules/State";
 
-function Location(props: { name: string; created: string; pos: string; instance?: Configuration }) {
+function Location(props: { name: string; created: string; pos: string; instance?: Configuration; saveId?: string }) {
+	if (props.pos === undefined) {
+		warn("Invalid position saved");
+		return <frame BackgroundTransparency={1} />;
+	}
+
 	return (
 		<frame Size={new UDim2(1, 0, 0, 75)} BackgroundTransparency={1}>
 			<TextButton
@@ -37,7 +42,10 @@ function Location(props: { name: string; created: string; pos: string; instance?
 				AnchorPoint={new Vector2(1, 1)}
 				BackgroundTransparency={1}
 				Event={{
-					MouseButton1Click: () => props.instance?.Destroy(),
+					MouseButton1Click: () => {
+						props.instance?.Destroy();
+						if (props.saveId) DeletePrivateLocation.Fire(props.saveId);
+					},
 				}}
 			/>
 
@@ -91,12 +99,18 @@ function Locations(props: { locations: Location[] }) {
 	return (
 		<>
 			{props.locations.map((loc, index) => {
+				if (loc.Position === undefined) {
+					warn("Invalid position saved");
+					return <frame BackgroundTransparency={1} />;
+				}
+
 				return (
 					<Location
 						name={loc.Name}
 						created={loc.CreatedBy}
 						pos={`(${loc.Position.X}, ${loc.Position.Y}, ${loc.Position.Z})`}
 						instance={loc.SharedConfigInstance}
+						saveId={loc.PrivateSaveId}
 					/>
 				);
 			})}

@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "@rbxts/react";
 import { TextButton, TextLabel } from "../Components";
-import { GoToMainPage } from "../../Modules/Signals";
+import { CreatePrivateLocation, GoToMainPage } from "../../Modules/Signals";
 import { CreateConfigFromLocation } from "../../Modules/Config";
 import { Players } from "@rbxts/services";
 
@@ -87,6 +87,17 @@ export default (props: { editCFrame: CFrame }) => {
 					BorderSizePixel={0}
 					Text={"Create"}
 					TextSize={18}
+					Event={{
+						MouseButton1Click: () => {
+							GoToMainPage.Fire();
+							const location = {
+								Name: locName,
+								Position: props.editCFrame,
+								CreatedBy: `By @${Players.LocalPlayer.Name} (${DateTime.now().ToIsoDate()})`,
+							};
+							CreatePrivateLocation.Fire(location);
+						},
+					}}
 				/>
 
 				<TextButton
