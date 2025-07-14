@@ -11,13 +11,12 @@ export default class SaveSystem implements OnStart {
 
 	public LoadLocations() {
 		const id = game.PlaceId;
-		const loaded = this.Studio.plugin.GetSetting(tostring(id) + "-ABC") as string;
+		const loaded = this.Studio.plugin.GetSetting(tostring(id) + "-SavedLocations") as string;
 
 		if (loaded) {
 			const loadedInfo = HttpService.JSONDecode(loaded) as Location[];
 
 			const locations: Location[] = [];
-			print(loadedInfo);
 			loadedInfo.forEach((loc) => {
 				locations.push({
 					...loc,
@@ -33,7 +32,7 @@ export default class SaveSystem implements OnStart {
 
 	public SaveLocations(locations: Location[]) {
 		const id = game.PlaceId;
-		this.Studio.plugin.SetSetting(tostring(id) + "-ABC", HttpService.JSONEncode(locations));
+		this.Studio.plugin.SetSetting(tostring(id) + "-SavedLocations", HttpService.JSONEncode(locations));
 	}
 
 	private _TrackAttributeChangeAndReload(config: Instance, attrib: string) {
@@ -98,8 +97,22 @@ export default class SaveSystem implements OnStart {
 				}
 
 				locations.remove(index);
-				this.SaveLocations(locations);
-				SendUpdateLocations(locations);
+
+				const toSaveLocations: Location[] = [];
+				locations.forEach((loc) => {
+					toSaveLocations.push({
+						...loc,
+						Position: {
+							X: loc.Position.X,
+							Y: loc.Position.Y,
+							Z: loc.Position.Z,
+						} as unknown as CFrame,
+						PrivateSaveId: loc.PrivateSaveId ?? HttpService.GenerateGUID(false),
+					});
+				});
+
+				this.SaveLocations(toSaveLocations);
+				SendUpdateLocations(this.LoadLocations());
 			}),
 		);
 	}
