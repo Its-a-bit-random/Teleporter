@@ -1,5 +1,5 @@
 export interface Location {
-	Position: CFrame;
+	Camera: CameraLocation;
 	CreatedBy: string;
 	Name: string;
 	SharedConfigInstance?: Configuration;
@@ -19,4 +19,9 @@ export const enum GuiPage {
 export const enum CONSTANTS {
 	PluginRootFolderName = "Plugins by Its a bit random",
 	PluginFolderName = "Teleporter",
+}
+
+export interface CameraLocation {
+	CFrame: CFrame;
+	Focus: CFrame;
 }

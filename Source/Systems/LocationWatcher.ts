@@ -18,8 +18,10 @@ export default class LocationWatcher implements OnHeartbeat, OnEnd {
 		return foundPos;
 	}
 
-	private _SetPositionValue(player: Player, position: CFrame) {
-		const value = (this.GetPositionValue(player).Value = position);
+	private _SetPositionValue(player: Player, position: CFrame, focus: CFrame) {
+		const value = this.GetPositionValue(player);
+		value.Value = position;
+		value.SetAttribute("Focus", focus);
 	}
 
 	onHeartbeat(): void {
@@ -30,7 +32,8 @@ export default class LocationWatcher implements OnHeartbeat, OnEnd {
 		if (camera === undefined) return;
 
 		const cameraCFrame = camera.CFrame;
-		this._SetPositionValue(player, cameraCFrame);
+		const cameraFocus = camera.Focus;
+		this._SetPositionValue(player, cameraCFrame, cameraFocus);
 	}
 
 	onEnd(): void {

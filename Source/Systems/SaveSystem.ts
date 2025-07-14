@@ -1,6 +1,6 @@
 import { Dependency, OnEnd, OnStart, Studio, System, Track } from "@rbxts/comet";
 import { HttpService } from "@rbxts/services";
-import { Location } from "../Types";
+import { CameraLocation, Location } from "../Types";
 import { GetSharedPositionsFolder } from "../Modules/Config";
 import { SendUpdateLocations } from "../Modules/Helper";
 import { CreatePrivateLocation, DeletePrivateLocation } from "../Modules/Signals";
@@ -20,7 +20,10 @@ export default class SaveSystem implements OnStart {
 			loadedInfo.forEach((loc) => {
 				locations.push({
 					...loc,
-					Position: new CFrame(loc.Position.X, loc.Position.Y, loc.Position.Z),
+					Camera: {
+						CFrame: new CFrame(loc.Camera.CFrame.X, loc.Camera.CFrame.Y, loc.Camera.CFrame.Z),
+						Focus: new CFrame(loc.Camera.Focus.X, loc.Camera.Focus.Y, loc.Camera.Focus.Z),
+					},
 				});
 			});
 
@@ -72,11 +75,19 @@ export default class SaveSystem implements OnStart {
 				locations.forEach((loc) => {
 					toSaveLocations.push({
 						...loc,
-						Position: {
-							X: loc.Position.X,
-							Y: loc.Position.Y,
-							Z: loc.Position.Z,
-						} as unknown as CFrame,
+						Camera: {
+							Focus: {
+								X: loc.Camera.Focus.X,
+								Y: loc.Camera.Focus.Y,
+								Z: loc.Camera.Focus.Z,
+							},
+
+							CFrame: {
+								X: loc.Camera.CFrame.X,
+								Y: loc.Camera.CFrame.Y,
+								Z: loc.Camera.CFrame.Z,
+							},
+						} as unknown as CameraLocation,
 						PrivateSaveId: loc.PrivateSaveId ?? HttpService.GenerateGUID(false),
 					});
 				});
@@ -102,11 +113,20 @@ export default class SaveSystem implements OnStart {
 				locations.forEach((loc) => {
 					toSaveLocations.push({
 						...loc,
-						Position: {
-							X: loc.Position.X,
-							Y: loc.Position.Y,
-							Z: loc.Position.Z,
-						} as unknown as CFrame,
+						Camera: {
+							Focus: {
+								X: loc.Camera.Focus.X,
+								Y: loc.Camera.Focus.Y,
+								Z: loc.Camera.Focus.Z,
+							},
+
+							CFrame: {
+								X: loc.Camera.CFrame.X,
+								Y: loc.Camera.CFrame.Y,
+								Z: loc.Camera.CFrame.Z,
+							},
+						} as unknown as CameraLocation,
+
 						PrivateSaveId: loc.PrivateSaveId ?? HttpService.GenerateGUID(false),
 					});
 				});

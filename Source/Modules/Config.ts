@@ -1,14 +1,13 @@
-import { Workspace } from "@rbxts/services";
+import { ServerStorage } from "@rbxts/services";
 import { CONSTANTS, Location, PluginFolder } from "../Types";
 
 export function GetRootFolder() {
-	const foundFolder = Workspace.Terrain.FindFirstChild(CONSTANTS.PluginRootFolderName);
+	const foundFolder = ServerStorage.FindFirstChild(CONSTANTS.PluginRootFolderName);
 
 	if (foundFolder === undefined) {
 		const newFolder = new Instance("Folder");
 		newFolder.Name = CONSTANTS.PluginRootFolderName;
-		newFolder.Archivable = false;
-		newFolder.Parent = Workspace.Terrain;
+		newFolder.Parent = ServerStorage;
 		return newFolder;
 	}
 
@@ -23,7 +22,6 @@ export function GetPluginFolder() {
 	if (pluginFolder === undefined) {
 		const newFolder = new Instance("Folder") as PluginFolder;
 		newFolder.Name = CONSTANTS.PluginFolderName;
-		newFolder.Archivable = false;
 		newFolder.Parent = root;
 
 		GetSharedPositionsFolder(newFolder);
@@ -44,7 +42,6 @@ export function GetPlayerPositionsFolder(pluginFolder: PluginFolder = GetPluginF
 	if (foundFolder === undefined) {
 		const positionsFolder = new Instance("Folder");
 		positionsFolder.Name = "PlayerPositions";
-		positionsFolder.Archivable = false;
 		positionsFolder.Parent = pluginFolder;
 		return positionsFolder;
 	}
@@ -58,7 +55,6 @@ export function GetSharedPositionsFolder(pluginFolder: PluginFolder = GetPluginF
 	if (foundFolder === undefined) {
 		const positionsFolder = new Instance("Folder");
 		positionsFolder.Name = "SharedPositions";
-		positionsFolder.Archivable = false;
 		positionsFolder.Parent = pluginFolder;
 		return positionsFolder;
 	}
@@ -68,7 +64,10 @@ export function GetSharedPositionsFolder(pluginFolder: PluginFolder = GetPluginF
 
 export function LoadLocationFromConfig(config: Configuration): Location {
 	return {
-		Position: (config.GetAttribute("Position") as CFrame) ?? new CFrame(-1, -1, -1),
+		Camera: {
+			CFrame: (config.GetAttribute("Position") as CFrame) ?? new CFrame(-1, -1, -1),
+			Focus: (config.GetAttribute("Focus") as CFrame) ?? new CFrame(-1, -1, -1),
+		},
 		Name: (config.GetAttribute("Name") as string) ?? "Failed to read name",
 		CreatedBy: (config.GetAttribute("CreatedBy") as string) ?? "Unknown",
 		SharedConfigInstance: config,
@@ -76,12 +75,10 @@ export function LoadLocationFromConfig(config: Configuration): Location {
 }
 
 export function CreateConfigFromLocation(location: Location) {
-	print("Saving shared location:", location);
-
 	const config = new Instance("Configuration");
-	config.SetAttribute("Position", location.Position);
+	config.SetAttribute("Position", location.Camera.CFrame);
+	config.SetAttribute("Focus", location.Camera.Focus);
 	config.SetAttribute("Name", location.Name);
 	config.SetAttribute("CreatedBy", location.CreatedBy);
-	config.Archivable = false;
 	config.Parent = GetSharedPositionsFolder();
 }

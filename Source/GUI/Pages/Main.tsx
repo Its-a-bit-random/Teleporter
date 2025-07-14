@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "@rbxts/react";
 import { TextButton, TextLabel } from "../Components";
-import { Location } from "../../Types";
+import { CameraLocation, Location } from "../../Types";
 import { DeletePrivateLocation, GoToEditPage, UpdateLocations } from "../../Modules/Signals";
 import { Players, Workspace } from "@rbxts/services";
 import { GetCameraCFrame, TeleportCamera } from "../../Modules/Helper";
@@ -8,7 +8,13 @@ import { subscribe } from "@rbxts/charm";
 import { displayLocations } from "../../Modules/State";
 import { GetPlayerPositionsFolder } from "../../Modules/Config";
 
-function Location(props: { name: string; created: string; pos: CFrame; instance?: Configuration; saveId?: string }) {
+function Location(props: {
+	name: string;
+	created: string;
+	pos: CameraLocation;
+	instance?: Configuration;
+	saveId?: string;
+}) {
 	if (props.pos === undefined) {
 		warn("Invalid position saved");
 		return <frame BackgroundTransparency={1} />;
@@ -77,7 +83,7 @@ function Location(props: { name: string; created: string; pos: CFrame; instance?
 				key={"Position"}
 				Size={new UDim2(1, 0, 0, 30)}
 				Position={UDim2.fromOffset(0, 35)}
-				Text={`(${math.round(props.pos.Position.X)}, ${math.round(props.pos.Position.Y)}, ${math.round(props.pos.Position.Z)})`}
+				Text={`(${math.round(props.pos.CFrame.Position.X)}, ${math.round(props.pos.CFrame.Position.Y)}, ${math.round(props.pos.CFrame.Position.Z)})`}
 				FontFace={
 					new Font(
 						"rbxasset://fonts/families/GothamSSm.json",
@@ -97,7 +103,7 @@ function Locations(props: { locations: Location[] }) {
 	return (
 		<>
 			{props.locations.map((loc, index) => {
-				if (loc.Position === undefined) {
+				if (loc.Camera === undefined) {
 					warn("Invalid position saved");
 					return <frame BackgroundTransparency={1} />;
 				}
@@ -106,7 +112,7 @@ function Locations(props: { locations: Location[] }) {
 					<Location
 						name={loc.Name}
 						created={loc.CreatedBy}
-						pos={loc.Position}
+						pos={loc.Camera}
 						instance={loc.SharedConfigInstance}
 						saveId={loc.PrivateSaveId}
 					/>
@@ -177,7 +183,11 @@ export default () => {
 									)[0]
 								}
 								Event={{
-									MouseButton1Click: () => TeleportCamera((instance as CFrameValue).Value),
+									MouseButton1Click: () =>
+										TeleportCamera({
+											CFrame: (instance as CFrameValue).Value,
+											Focus: instance.GetAttribute("Focus") as CFrame,
+										}),
 								}}
 							/>
 						);

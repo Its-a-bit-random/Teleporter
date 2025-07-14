@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "@rbxts/react";
-import { GuiPage } from "../Types";
+import { CameraLocation, GuiPage } from "../Types";
 import Main from "./Pages/Main";
 import Edit from "./Pages/Edit";
 import { GoToEditPage, GoToMainPage } from "../Modules/Signals";
 
 export default () => {
 	const [page, SetPage] = useState(GuiPage.Main);
-	const [editCFrame, setEditCFrame] = useState(new CFrame());
+	const [editCFrame, setEditCFrame] = useState<CameraLocation>({ CFrame: new CFrame(), Focus: new CFrame() });
 
 	useEffect(() => {
-		const editConn = GoToEditPage.Connect((cf) => {
-			setEditCFrame(cf);
+		const editConn = GoToEditPage.Connect((cameraLocation) => {
+			setEditCFrame(cameraLocation);
 			SetPage(GuiPage.Edit);
 		});
 
@@ -30,7 +30,7 @@ export default () => {
 		</>
 	) : (
 		<>
-			<Edit editCFrame={editCFrame} />
+			<Edit editLocation={editCFrame} />
 		</>
 	);
 };

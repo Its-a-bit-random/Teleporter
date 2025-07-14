@@ -3,8 +3,9 @@ import { TextButton, TextLabel } from "../Components";
 import { CreatePrivateLocation, GoToMainPage } from "../../Modules/Signals";
 import { CreateConfigFromLocation } from "../../Modules/Config";
 import { Players } from "@rbxts/services";
+import { CameraLocation } from "../../Types";
 
-export default (props: { editCFrame: CFrame }) => {
+export default (props: { editLocation: CameraLocation }) => {
 	const [locName, setLocName] = useState("Unnamed Location");
 
 	return (
@@ -30,7 +31,7 @@ export default (props: { editCFrame: CFrame }) => {
 							Enum.FontStyle.Normal,
 						)
 					}
-					Text={`Saving location: (${math.round(props.editCFrame.Position.X)}, ${math.round(props.editCFrame.Position.Y)}, ${math.round(props.editCFrame.Position.Z)})`}
+					Text={`Saving location: (${math.round(props.editLocation.CFrame.X)}, ${math.round(props.editLocation.CFrame.Y)}, ${math.round(props.editLocation.CFrame.Z)})`}
 					TextYAlignment={Enum.TextYAlignment.Bottom}
 				/>
 			</frame>
@@ -91,7 +92,7 @@ export default (props: { editCFrame: CFrame }) => {
 							GoToMainPage.Fire();
 							const location = {
 								Name: locName,
-								Position: props.editCFrame,
+								Camera: props.editLocation,
 								CreatedBy: `By @${Players.LocalPlayer.Name} (${DateTime.now().ToIsoDate()})`,
 							};
 							CreatePrivateLocation.Fire(location);
@@ -112,7 +113,7 @@ export default (props: { editCFrame: CFrame }) => {
 							GoToMainPage.Fire();
 							CreateConfigFromLocation({
 								Name: locName,
-								Position: props.editCFrame,
+								Camera: props.editLocation,
 								CreatedBy: `By @${Players.LocalPlayer.Name}`,
 							});
 						},

@@ -1,8 +1,8 @@
 import Signal from "@rbxutil/signal";
-import { Location } from "../Types";
+import { CameraLocation, Location } from "../Types";
 
 export const UpdateLocations = new Signal<[Location[]]>();
-export const GoToEditPage = new Signal<[CFrame]>();
+export const GoToEditPage = new Signal<[CameraLocation]>();
 export const GoToMainPage = new Signal<void>();
 
 export const CreatePrivateLocation = new Signal<[Location]>();
