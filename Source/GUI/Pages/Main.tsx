@@ -3,12 +3,12 @@ import { TextButton, TextLabel } from "../Components";
 import { Location } from "../../Types";
 import { DeletePrivateLocation, GoToEditPage, UpdateLocations } from "../../Modules/Signals";
 import { Players, Workspace } from "@rbxts/services";
-import { GetCameraCFrame } from "../../Modules/Helper";
+import { GetCameraCFrame, TeleportCamera } from "../../Modules/Helper";
 import { subscribe } from "@rbxts/charm";
 import { displayLocations } from "../../Modules/State";
 import { GetPlayerPositionsFolder } from "../../Modules/Config";
 
-function Location(props: { name: string; created: string; pos: string; instance?: Configuration; saveId?: string }) {
+function Location(props: { name: string; created: string; pos: CFrame; instance?: Configuration; saveId?: string }) {
 	if (props.pos === undefined) {
 		warn("Invalid position saved");
 		return <frame BackgroundTransparency={1} />;
@@ -25,6 +25,9 @@ function Location(props: { name: string; created: string; pos: string; instance?
 				Size={UDim2.fromOffset(70, 25)}
 				AnchorPoint={new Vector2(1, 1)}
 				Position={UDim2.fromScale(1, 1)}
+				Event={{
+					MouseButton1Click: () => TeleportCamera(props.pos),
+				}}
 			>
 				<uistroke
 					key={"Stroke"}
@@ -80,7 +83,7 @@ function Location(props: { name: string; created: string; pos: string; instance?
 				key={"Position"}
 				Size={new UDim2(1, 0, 0, 30)}
 				Position={UDim2.fromOffset(0, 35)}
-				Text={props.pos}
+				Text={`(${props.pos.Position.X}, ${props.pos.Position.Y}, ${props.pos.Position.Z})`}
 				FontFace={
 					new Font(
 						"rbxasset://fonts/families/GothamSSm.json",
@@ -109,7 +112,7 @@ function Locations(props: { locations: Location[] }) {
 					<Location
 						name={loc.Name}
 						created={loc.CreatedBy}
-						pos={`(${loc.Position.X}, ${loc.Position.Y}, ${loc.Position.Z})`}
+						pos={loc.Position}
 						instance={loc.SharedConfigInstance}
 						saveId={loc.PrivateSaveId}
 					/>
@@ -176,6 +179,9 @@ export default () => {
 										Enum.ThumbnailSize.Size48x48,
 									)[0]
 								}
+								Event={{
+									MouseButton1Click: () => TeleportCamera((instance as CFrameValue).Value),
+								}}
 							/>
 						);
 					})}

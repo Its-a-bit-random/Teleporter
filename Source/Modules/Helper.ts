@@ -24,3 +24,11 @@ export function GetCameraCFrame() {
 
 	return new CFrame(newPosition);
 }
+
+export function TeleportCamera(cframe: CFrame) {
+	const Camera = Workspace.CurrentCamera!;
+	Camera.CameraType = Enum.CameraType.Scriptable;
+	Camera.CFrame = cframe;
+	Camera.Focus = cframe;
+	Camera.CameraType = Enum.CameraType.Fixed;
+}
